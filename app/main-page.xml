@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="bg-gray-100">
+    <ActionBar title="IoT Dashboard" class="bg-blue-600 text-white">
+        <ActionItem tap="{{ toggleBluetooth }}" ios.position="right" android.position="actionBar">
+            <Label text="{{ isBluetoothEnabled ? '🔵' : '⚪' }}" class="text-2xl" />
+        </ActionItem>
+    </ActionBar>
+
+    <ScrollView>
+        <StackLayout class="p-4">
+            <!-- Status Panel -->
+            <GridLayout rows="auto" columns="*, *" class="bg-white rounded-lg p-4 shadow-md mb-4">
+                <Label col="0" text="Status:" class="text-gray-600" />
+                <Label col="1" text="{{ connectionStatus }}" class="text-right" 
+                    class="{{ isConnected ? 'text-green-600' : 'text-red-600' }}" />
+            </GridLayout>
+
+            <!-- Sensor Readings -->
+            <GridLayout rows="auto, auto" columns="*, *" class="gap-4">
+                <!-- Temperature Gauge -->
+                <StackLayout row="0" col="0" class="bg-white rounded-lg p-4 shadow-md">
+                    <Label text="Temperature" class="text-lg font-bold text-gray-800 mb-2" />
+                    <Gauge value="{{ temperature }}" 
+                           minValue="0" 
+                           maxValue="100" 
+                           units="°C" />
+                    <Label text="{{ temperature }}°C" class="text-2xl text-center text-blue-600" />
+                </StackLayout>
+
+                <!-- Humidity Gauge -->
+                <StackLayout row="0" col="1" class="bg-white rounded-lg p-4 shadow-md">
+                    <Label text="Humidity" class="text-lg font-bold text-gray-800 mb-2" />
+                    <Gauge value="{{ humidity }}" 
+                           minValue="0" 
+                           maxValue="100" 
+                           units="%" />
+                    <Label text="{{ humidity }}%" class="text-2xl text-center text-green-600" />
+                </StackLayout>
+
+                <!-- Energy Monitor -->
+                <StackLayout row="1" col="0" colSpan="2" class="bg-white rounded-lg p-4 shadow-md mt-4">
+                    <Label text="Energy Consumption" class="text-lg font-bold text-gray-800 mb-2" />
+                    <Gauge value="{{ energy }}" 
+                           minValue="0" 
+                           maxValue="1000" 
+                           units="W" />
+                    <Label text="{{ energy }}W" class="text-2xl text-center text-purple-600" />
+                </StackLayout>
+            </GridLayout>
+
+            <!-- Controls -->
+            <StackLayout class="mt-4">
+                <Button text="{{ isScanning ? 'Stop Scan' : 'Scan for Devices' }}" 
+                        tap="{{ toggleScan }}"
+                        class="{{ isScanning ? 'bg-red-500' : 'bg-blue-500' }} text-white rounded-lg p-4" />
+                
+                <ListView items="{{ devices }}" class="mt-4 bg-white rounded-lg shadow-md" 
+                          itemTap="{{ onDeviceSelect }}" height="200">
+                    <ListView.itemTemplate>
+                        <StackLayout class="p-2 border-b border-gray-200">
+                            <Label text="{{ name }}" class="text-lg" />
+                            <Label text="{{ UUID }}" class="text-sm text-gray-600" />
+                        </StackLayout>
+                    </ListView.itemTemplate>
+                </ListView>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</Page>
